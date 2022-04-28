@@ -1,4 +1,4 @@
-package com.abhilash.demo.security;
+package com.abhilash.demo.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,8 +18,8 @@ import lombok.AllArgsConstructor;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
-	private AppUserService appUserService;
-	 private BCryptPasswordEncoder bCryptPasswordEncoder;
+	private final AppUserService appUserService = new AppUserService();
+	 private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -39,12 +39,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 	}
 	
-//	@Bean
-//    public DaoAuthenticationProvider daoAuthenticationProvider() {
-//        DaoAuthenticationProvider provider =
-//                new DaoAuthenticationProvider();
-//        provider.setPasswordEncoder(bCryptPasswordEncoder);
-//        provider.setUserDetailsService(appUserService);
-//        return provider;
-//    }
+	@Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider provider =
+                new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(bCryptPasswordEncoder);
+        provider.setUserDetailsService(appUserService);
+        return provider;
+    }
 }
